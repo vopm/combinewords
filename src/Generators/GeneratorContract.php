@@ -13,7 +13,7 @@ interface GeneratorContract
      * @param bool $preserveRequirements
      * @return string
      */
-    public function make($format, $maxAttempts = null, $preserveRequirements = false);
+    public function make($format, $maxAttempts = null, $preserveRequirements = false,$capitalize = false);
 
     /**
      * Add a requirement to the generator.

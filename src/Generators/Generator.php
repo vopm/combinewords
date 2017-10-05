@@ -171,15 +171,19 @@ class Generator implements GeneratorContract
      * Generate a string from random words using a format string.
      *
      * @param string $format
+     * @param boolean $capitalize
      * @return string
      */
-    protected function generate($format)
+    protected function generate($format,$capitalize)
     {
         $buffer = $format;
 
         foreach ($this->holders($format) as $holder)
         {
             $replacement = $this->replacement($holder);
+            if($capitalize){
+                $replacement = ucfirst($replacement);
+            }
 
             $buffer = $this->replace($buffer, $holder, $replacement);
         }
@@ -249,7 +253,7 @@ class Generator implements GeneratorContract
      * @param bool $preserveRequirements
      * @return string
      */
-    public function make($format, $maxAttempts = null, $preserveRequirements = false)
+    public function make($format, $maxAttempts = null, $preserveRequirements = false,$capitalize = false)
     {
         $this->maxAttempts = $maxAttempts !== null ? $maxAttempts : $this->maxAttempts;
 
@@ -261,7 +265,7 @@ class Generator implements GeneratorContract
             if ($this->tooManyAttempts($attempts))
                 return null;
 
-            $buffer = $this->generate($format);
+            $buffer = $this->generate($format,$capitalize);
 
             $attempts++;
         } while (!$this->satisfiesRequirements($buffer));
